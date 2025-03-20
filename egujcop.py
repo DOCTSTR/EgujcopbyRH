@@ -1,19 +1,17 @@
 import streamlit as st
 from docx import Document
 import re
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
-#remove special characters
+# Function to remove special characters
 def remove_special_characters(text):
-    return re.sub(r"[.,\"\/\\()\?!;:\[\]{}@#$%^&*“”_+’‘''=|<>`-]", '', text)
+    return re.sub(r'[.,\"\/\\()\?!;:\[\]{}@#$%^&*_+=|<>`]', '', text)
 
-#translate Gujarati to Englishs
+# Function to translate Gujarati to English
 def translate_to_english(text):
-    translator = Translator()
-    translated_text = translator.translate(text, src='gu', dest='en')
-    return translated_text.text
+    return GoogleTranslator(source='gujarati', target='english').translate(text)
 
-#process a Word document
+# Function to process a Word document
 def process_word_document(input_path, output_path):
     doc = Document(input_path)
     for para in doc.paragraphs:
@@ -26,7 +24,7 @@ def process_word_document(input_path, output_path):
     doc.save(output_path)
 
 # Streamlit App
-st.title("e-GujCop Gujarati-English Text")
+st.title("📝 Gujarati-English Text Processor")
 
 # Option selection: File Upload or Text Input
 option = st.radio("Choose Input Method:", ("Upload Word File", "Enter Text Directly"))
@@ -44,26 +42,26 @@ if option == "Upload Word File":
         # Process file
         process_word_document(input_path, output_path)
         
-        st.success("Processing complete! Download your cleaned file below.")
+        st.success("✅ Processing complete! Download your cleaned file below.")
         
         with open(output_path, "rb") as f:
-            st.download_button("Download Cleaned File", f, file_name="cleaned_output.docx")
+            st.download_button("📥 Download Cleaned File", f, file_name="cleaned_output.docx")
 
 elif option == "Enter Text Directly":
     text_input = st.text_area("Enter your Gujarati paragraph here:")
     
     if st.button("Process Text"):
         if text_input:
-            cleaned_gujarati = remove_special_characters(text_input)  #Clean Gujarati
-            translated_text = translate_to_english(text_input)  #Translate to English
-            cleaned_english = remove_special_characters(translated_text)  #Clean English
+            cleaned_gujarati = remove_special_characters(text_input)  # Step 1: Clean Gujarati
+            translated_text = translate_to_english(text_input)  # Step 2: Translate to English
+            cleaned_english = remove_special_characters(translated_text)  # Step 3: Clean English
 
             # Display only 2 required fields
-            st.subheader("Cleaned Gujarati (No Special Characters):")
+            st.subheader("✅ Cleaned Gujarati (No Special Characters):")
             st.text_area("Gujarati Cleaned:", cleaned_gujarati, height=150)
 
-            st.subheader("Final Cleaned English Text:")
+            st.subheader("✅ Final Cleaned English Text:")
             st.text_area("English Cleaned:", cleaned_english, height=150)
         else:
-            st.warning("Please enter some text!")
+            st.warning("⚠️ Please enter some text!")
 
