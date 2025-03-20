@@ -24,7 +24,7 @@ def process_word_document(input_path, output_path):
     doc.save(output_path)
 
 # Streamlit App
-st.title("📝 Gujarati-English Text Processor")
+st.title("e-GujCOP Gujarati-English Text")
 
 # Option selection: File Upload or Text Input
 option = st.radio("Choose Input Method:", ("Upload Word File", "Enter Text Directly"))
