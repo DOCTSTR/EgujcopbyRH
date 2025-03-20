@@ -5,7 +5,7 @@ from deep_translator import GoogleTranslator
 
 # Function to remove special characters
 def remove_special_characters(text):
-    return re.sub(r'[.,\"\/\\()\?!;:\[\]{}@#$%^&*_+=|<>`]', '', text)
+    return re.sub(r"[.,\"\/\\()\?!;:\[\]{}@#$%^&*“”_+’‘''=|<>`-]", '', text)
 
 # Function to translate Gujarati to English
 def translate_to_english(text):
